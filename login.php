@@ -14,9 +14,15 @@ if (isset($_POST['login'])) {
                     email = '$email' AND password = '$encodedPass'";
         $exeUser = mysqli_query($conn, $selUser);
         $userData = mysqli_fetch_assoc($exeUser);
+        $userId = $userData['id'];
         if (isset($userData['id'])) {
             // login
-            $_SESSION['user_id'] = $userData['id'];
+            $upd = "UPDATE users SET last_login = current_timestamp() WHERE email = '$email'";
+            mysqli_query($conn, $upd);
+            $ip_add = $_SERVER['REMOTE_ADDR'];
+            $ins = "INSERT INTO user_ips SET user_id = $userId, ip_address ='$ip_add'";
+            mysqli_query($conn, $ins);
+            $_SESSION['user_id'] = $userId;
             $_SESSION['user_name'] = $userData['name'];
             $_SESSION['user_email'] = $email;
             header("LOCATION:index.php");
