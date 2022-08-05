@@ -50,9 +50,9 @@ if (isset($_POST['toggle'])) {
             $exeData = mysqli_query($conn, $selData);
             $data = mysqli_fetch_assoc($exeData);
             if ($data['status'] == 1) {
-            $qry = "UPDATE countries SET status = 0 WHERE id = $id";
+                $qry = "UPDATE countries SET status = 0 WHERE id = $id";
             } else {
-            $qry = "UPDATE countries SET status = 1 WHERE id = $id";
+                $qry = "UPDATE countries SET status = 1 WHERE id = $id";
             }
             mysqli_query($conn, $qry);
         }

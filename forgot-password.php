@@ -1,41 +1,37 @@
 <?php
 include "app/config.php";
 include "app/helper.php";
+// error_reporting(E_ALL);
 $error =  $_SESSION['error'] ?? 0; // 0: No error, 1: Yes error
 $msg = $_SESSION['message'] ?? ""; // NULL SAFE OPERATOR
-
 unset($_SESSION['error']);
 unset($_SESSION['message']);
-if (isset($_POST['login'])) {
+if (isset($_POST['reset'])) {
     $email = mysqli_escape_string($conn, $_POST['email']);
-    $password = mysqli_escape_string($conn, $_POST['password']);
-
-    if ($email != "" && $password != "") {
-        $encodedPass = md5($password);
+    if ($email != "") {
+        // next step
         $selUser = "SELECT * FROM users 
                     WHERE 
-                    email = '$email' AND password = '$encodedPass'";
+                    email = '$email'";
         $exeUser = mysqli_query($conn, $selUser);
         $userData = mysqli_fetch_assoc($exeUser);
         $userId = $userData['id'];
-        if (isset($userData['id'])) {
-            // login
-            $upd = "UPDATE users SET last_login = current_timestamp() WHERE email = '$email'";
-            mysqli_query($conn, $upd);
-            $ip_add = $_SERVER['REMOTE_ADDR'];
-            $ins = "INSERT INTO user_ips SET user_id = $userId, ip_address ='$ip_add'";
+        if (isset($userId)) {
+            // next step
+            $token = getToken(100);
+            $ins = "INSERT INTO reset_passwords SET user_id = $userId, token = '$token'";
             mysqli_query($conn, $ins);
-            $_SESSION['user_id'] = $userId;
-            $_SESSION['user_name'] = $userData['name'];
-            $_SESSION['user_email'] = $email;
-            header("LOCATION:index.php");
+            $link = "http://localhost/iip/reset-password.php?token=$token";
+            $mail_msg = "Hey we heard that you forgot your password, its okay just click on the given link to reset it: $link";
+            echo $link;
+            // mail($email, "Reset password", $mail_msg);
+            // echo $link;
         } else {
-            // invalid credentails
-            $msg = "Invalid credentails";
+            $msg = "You've entered an incorrect email address";
             $error = 1;
         }
     } else {
-        $msg = "Please fill all the required feilds";
+        $msg = "Please enter your email address";
         $error = 1;
     }
 }
@@ -64,11 +60,6 @@ if (isset($_POST['login'])) {
                 <span>Sub Head:</span>
                 Vitae auctor eu augudsf ut. Malesuada nunc vel risus commodo viverra. Praesent elementum facilisis leo vel.
             </p>
-            <div class="form-field">
-                <a href="login.php">
-                    <input type="button" class="account" value="Have an Account?">
-                </a>
-            </div>
         </div>
         <form class="form-right" method="post">
             <?php
@@ -84,23 +75,19 @@ if (isset($_POST['login'])) {
             ?>
 
 
-            <h2 class="text-uppercase">Login form</h2>
+            <h2 class="text-uppercase">Forgot Password?</h2>
 
             <div class="mb-3">
                 <label>Your Email</label>
                 <input type="email" class="input-field" name="email" required value="<?php echo $email ?>">
             </div>
-            <div class="mb-3">
-                <label>Password</label>
-                <input type="password" name="password" class="input-field">
-            </div>
             <div class="form-field">
-                <input type="submit" value="Login" class="register" name="login">
+                <input type="submit" value="Reset" class="register" name="reset">
             </div>
-            <div class="form-field">
-                <a href="forgot-password.php">Forogt Password?</a> It's okay it happens
-            </div>
-        </form>
+            <di v class="form-field">
+                Password recalled? <a href="login.php">Login now</a>
+    </div>
+    </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

@@ -49,7 +49,7 @@
                 <?php
                 } else {
                 ?>
-                    <div class="menu-item-left"><a href="register.php">Register</a></div>
+                    <div class="menu-item-left"><a href="register.php">Create Acc.</a></div>
                     <div class="menu-item-left"><a href="login.php">Login</a></div>
                 <?php
                 }
