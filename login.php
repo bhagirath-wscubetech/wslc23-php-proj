@@ -25,9 +25,12 @@ if (isset($_POST['login'])) {
             $ip_add = $_SERVER['REMOTE_ADDR'];
             $ins = "INSERT INTO user_ips SET user_id = $userId, ip_address ='$ip_add'";
             mysqli_query($conn, $ins);
-            $_SESSION['user_id'] = $userId;
-            $_SESSION['user_name'] = $userData['name'];
-            $_SESSION['user_email'] = $email;
+            // $_SESSION['user_id'] = $userId;
+            // $_SESSION['user_name'] = $userData['name'];
+            // $_SESSION['user_email'] = $email;
+            setcookie("user_id", $userId, getCookieExpiresTime());
+            setcookie("user_name", $userData['name'], getCookieExpiresTime());
+            setcookie("user_email", $email, getCookieExpiresTime());
             header("LOCATION:index.php");
         } else {
             // invalid credentails

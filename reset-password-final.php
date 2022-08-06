@@ -13,6 +13,8 @@ if (isset($_POST['reset'])) {
         mysqli_query($conn, $upd);
         $_SESSION['message'] = "Password reset successfully, Login once";
         $_SESSION['error'] = 0;
+        $del = "DELETE FROM reset_passwords WHERE token='$token'";
+        mysqli_query($conn, $del);
         header("LOCATION:login.php");
     } else {
         $_SESSION['message'] = "Password and Confirm password must match";

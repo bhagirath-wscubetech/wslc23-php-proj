@@ -38,11 +38,11 @@
                 <div class="menu-item-left"><a href="course.php">Courses</a></div>
                 <div class="menu-item-left"><a href="gallery.php">Gallery</a></div>
                 <?php
-                if (isset($_SESSION['user_id'])) {
+                if (isset($_COOKIE['user_id'])) {
                 ?>
                     <div class="menu-item-left">
                         <a href="profile.php">
-                            <?php echo $_SESSION['user_name'] ?>
+                            <?php echo $_COOKIE['user_name'] ?>
                         </a>
                     </div>
                     <div class="menu-item-left"><a href="logout.php">Logout</a></div>

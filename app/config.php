@@ -11,3 +11,4 @@ try {
     echo "Database connection error";
     die; // end of execution
 }
+

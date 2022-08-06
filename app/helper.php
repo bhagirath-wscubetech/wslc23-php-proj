@@ -78,3 +78,10 @@ function getUserByToken($token)
     }
     return $revert;
 }
+
+
+function getCookieExpiresTime()
+{
+    $COOKIES_EXPIRES = time() + (3600 * 24 * 10); // 10 days
+    return $COOKIES_EXPIRES;
+}
