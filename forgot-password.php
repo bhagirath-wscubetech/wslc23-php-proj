@@ -18,10 +18,10 @@ if (isset($_POST['reset'])) {
         $userId = $userData['id'];
         if (isset($userId)) {
             // next step
-            $token = getToken(100);
-            $ins = "INSERT INTO reset_passwords SET user_id = $userId, token = '$token'";
+            $myToken = getToken(100);
+            $ins = "INSERT INTO reset_passwords SET user_id = $userId, token = '$myToken'";
             mysqli_query($conn, $ins);
-            $link = "http://localhost/iip/reset-password.php?token=$token";
+            $link = "http://localhost/iip/reset-password.php?token=$myToken";
             $mail_msg = "Hey we heard that you forgot your password, its okay just click on the given link to reset it: $link";
             echo $link;
             // mail($email, "Reset password", $mail_msg);

@@ -4,7 +4,7 @@ include "app/helper.php";
 $error = 0; // 0: No error, 1: Yes error
 $msg = "";
 // error_reporting(E_ALL);
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_COOKIE['user_id'])) {
     header("LOCATION:login.php");
 }
 
@@ -12,7 +12,7 @@ if (isset($_POST['change_pass'])) {
     $old_pass = md5(escapeString($_POST['old_pass']));
     $new_pass = md5(escapeString($_POST['new_pass']));
     $con_pass = md5(escapeString($_POST['con_pass']));
-    $userId = $_SESSION['user_id'];
+    $userId = $_COOKIE['user_id'];
 
     $selUser = "SELECT * FROM users WHERE password = '$old_pass' AND id = $userId";
     $exeUser = mysqli_query($conn, $selUser);
@@ -30,9 +30,9 @@ if (isset($_POST['change_pass'])) {
                 mysqli_query($conn, $upd);
                 // $msg = "Password changed successfully";
                 // $error = 0;
-                unset($_SESSION['user_id']);
-                unset($_SESSION['user_name']);
-                unset($_SESSION['user_email']);
+                unset($_COOKIE['user_id']);
+                unset($_COOKIE['user_name']);
+                unset($_COOKIE['user_email']);
                 $_SESSION['message'] = "Password changed successfully, please login once";
                 $_SESSION['error'] = 1;
                 header("LOCATION:login.php");
