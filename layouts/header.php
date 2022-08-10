@@ -4,6 +4,8 @@
 <head>
     <title>IIP</title>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <meta name="title" content="<?php echo $metaTitle ?>">
+    <meta name="description" content="<?php echo $metaDescription ?>">
 </head>
 
 <body>
