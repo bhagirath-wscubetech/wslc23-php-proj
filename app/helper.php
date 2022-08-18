@@ -28,7 +28,7 @@ function crypto_rand_secure($min, $max)
     return $min + $rnd;
 }
 
-function getToken($length)
+function getToken($length, $tableName)
 {
     global $conn;
     $token = "";
@@ -40,11 +40,11 @@ function getToken($length)
     for ($i = 0; $i < $length; $i++) {
         $token .= $codeAlphabet[crypto_rand_secure(0, $max - 1)];
     }
-    $sel = "SELECT * FROM reset_passwords WHERE token = '$token'";
+    $sel = "SELECT * FROM $tableName WHERE token = '$token'";
     $exe = mysqli_query($conn, $sel);
     $count = mysqli_num_rows($exe);
     if ($count > 0) {
-        return getToken($length);
+        return getToken($length, $tableName);
     }
     return $token;
 }
@@ -84,4 +84,20 @@ function getCookieExpiresTime()
 {
     $COOKIES_EXPIRES = time() + (3600 * 24 * 10); // 10 days
     return $COOKIES_EXPIRES;
+}
+
+
+function isTokenExpired($createdAt)
+{
+    // 20 min = 1200 sec
+
+    $createdAtStamp = strtotime($createdAt);
+    $ab = $createdAtStamp;
+    $ac = time();
+    $diff = $ab - $ac;
+    if ($diff < -1200) {
+        return true; // yes the token is expired
+    } else {
+        return false; // the token is not expired
+    }
 }

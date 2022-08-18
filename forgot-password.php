@@ -18,7 +18,7 @@ if (isset($_POST['reset'])) {
         $userId = $userData['id'];
         if (isset($userId)) {
             // next step
-            $myToken = getToken(100);
+            $myToken = getToken(100,"reset_passwords");
             $ins = "INSERT INTO reset_passwords SET user_id = $userId, token = '$myToken'";
             mysqli_query($conn, $ins);
             $link = "http://localhost/iip/reset-password.php?token=$myToken";
